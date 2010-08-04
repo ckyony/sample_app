@@ -18,7 +18,9 @@ Spork.prefork do
 	config.mock_with :rspec
 
 	config.fixture_path = "#{::Rails.root}/spec/fixtures"
-	# 
+	config.use_transactional_fixtures = true
+	ActiveSupport::Dependencies.clear
+    end
 end
 
 Spork.each_run do
