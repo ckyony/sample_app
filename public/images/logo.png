@@ -1,0 +1,12 @@
+--2010-08-06 13:23:49--  http://railstutorial.org/images/sample_app/logo.png
+Resolving railstutorial.org... 75.101.145.87, 75.101.163.44, 174.129.212.2
+Connecting to railstutorial.org|75.101.145.87|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 56306 (55K) [image/png]
+Saving to: `logo.png.3'
+
+     0K .......... .......... .......... .......... .......... 90% 38.0K 0s
+    50K ....                                                  100%  259K=1.3s
+
+2010-08-06 13:23:51 (41.2 KB/s) - `logo.png.3' saved [56306/56306]
+
