@@ -1,17 +1,18 @@
 # == Schema Information
-# Schema version: 20100809062329
+# Schema version: 20100812164835
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  salt               :string(255)
+#  encrypted_password :string(255)
 #
 
-
+require 'digest'
 
 class User < ActiveRecord::Base
   attr_accessor :password # to create a virtual password attribute not stored in the db 
@@ -34,17 +35,33 @@ class User < ActiveRecord::Base
   # return true if the user's pwd matches the submitted password
   def has_password?(submitted_password)
     #compare encrypted password with the encrypted version of submitted password
+    encrypted_password == encrypt(submitted_password)
+  end
+
+  def self.authenticate(email, submitted_password)
+    user = find_by_email(email)
+    user && user.has_password?(submitted_password) ? user : nil
   end
 
   private 
   
     def encrypt_password
+      self.salt = make_salt if new_record?
       self.encrypted_password = encrypt(password)
     end
 
     def encrypt(string)
-      string.reverse # only a temporary implementation
+      secure_hash("#{salt}--#{string}")
     end
+
+    def make_salt
+      secure_hash("#{Time.now.utc}--#{password}")
+    end
+
+    def secure_hash(string)
+      Digest::SHA2.hexdigest(string)
+    end
+
 
 
 
